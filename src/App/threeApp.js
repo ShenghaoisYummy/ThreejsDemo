@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+import Stats from "three/examples/jsm/libs/stats.module.js";
 class Three_App {
   renderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -14,6 +14,10 @@ class Three_App {
     1000
   );
 
+  model = null;
+
+  stats = new Stats();
+
   constructor() {
     if (Three_App.instance) return Three_App.instance;
     Three_App.instance = this;
@@ -23,6 +27,7 @@ class Three_App {
 
   init = () => {
     this.rendererSetting();
+    this.statsSetting();
     this.cameraSetting();
   };
   rendererSetting = () => {
@@ -38,8 +43,13 @@ class Three_App {
     this.camera.updateProjectionMatrix();
   };
 
+  statsSetting = () => {
+    this.stats.showPanel(1);
+    document.querySelector("#app")?.appendChild(this.stats.dom);
+  };
+
   cameraSetting = () => {
-    this.camera.position.z = 5;
+    this.camera.position.z = 3;
   };
 
   render = () => {
