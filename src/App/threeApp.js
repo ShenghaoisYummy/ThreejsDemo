@@ -1,11 +1,13 @@
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
+import { GUI } from "dat.gui";
 class Three_App {
   renderer = new THREE.WebGLRenderer({
     antialias: true,
   });
   static instance = null;
   scene = new THREE.Scene();
+  gui = null;
 
   camera = new THREE.PerspectiveCamera(
     75,
@@ -77,15 +79,17 @@ class Three_App {
     this.scene.add(mesh);
   };
 
-  addModel = (model) => {
+  addModel = (model, name) => {
     this.modelList.push(model);
     if (model?.mesh) this.scene.add(model.mesh);
+
+    this.gui = model.guiInteractive(this.gui, name);
   };
 
   addModelList = (list = []) => {
     if (Array.isArray(list) && list.length > 0) {
-      list.forEach((model) => {
-        this.addModel(model);
+      list.forEach((element) => {
+        this.addModel(element.model, element.name);
       });
     }
   };

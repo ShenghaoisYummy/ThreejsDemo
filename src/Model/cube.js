@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { GUI } from "dat.gui";
 
 class Cube {
   geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -23,6 +24,22 @@ class Cube {
     }
     this.init();
   }
+
+  guiInteractive = (gui, name = "Cube") => {
+    if (!this.guiInteractiveSwitch) return;
+
+    gui ||= new GUI();
+    const cuberFolder = gui.addFolder(name);
+    this.setScale(cuberFolder);
+    cuberFolder.open();
+    return gui;
+  };
+
+  setScale = (folder) => {
+    folder?.add(this.mesh.scale, "x", 1, 2);
+    folder?.add(this.mesh.scale, "y", 1, 2);
+    folder?.add(this.mesh.scale, "z", 1, 2);
+  };
 
   init = () => {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
