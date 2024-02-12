@@ -30,9 +30,12 @@ class Three_App {
     this.renderer.domElement.id = "threejs_scene";
     document.querySelector("#app")?.appendChild(this.renderer.domElement);
 
-    window.addEventListener('resize', (e) => {
-        
-    })
+    window.addEventListener("resize", (e) => {
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
   };
 
   cameraSetting = () => {
