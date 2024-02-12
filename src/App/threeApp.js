@@ -14,7 +14,7 @@ class Three_App {
     1000
   );
 
-  model = null;
+  modelList = [];
 
   stats = new Stats();
 
@@ -23,6 +23,7 @@ class Three_App {
     Three_App.instance = this;
     this.init();
     this.animate();
+    this.modelAnimate();
   }
 
   init = () => {
@@ -30,6 +31,7 @@ class Three_App {
     this.statsSetting();
     this.cameraSetting();
   };
+
   rendererSetting = () => {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.domElement.id = "threejs_scene";
@@ -57,14 +59,35 @@ class Three_App {
   };
 
   animate = () => {
+    this.stats.begin();
     requestAnimationFrame(this.animate);
-    if (this.model?.animate) this.model.animate();
+    this.modelAnimate();
     this.render();
+    this.stats.end();
+    this.stats.update();
+  };
+
+  modelAnimate = () => {
+    this.modelList.forEach((model) => {
+      if (model?.animate) model.animate();
+    });
+  };
+
+  addMesh = (mesh) => {
+    this.scene.add(mesh);
   };
 
   addModel = (model) => {
-    this.model = model;
+    this.modelList.push(model);
     if (model?.mesh) this.scene.add(model.mesh);
+  };
+
+  addModelList = (list = []) => {
+    if (Array.isArray(list) && list.length > 0) {
+      list.forEach((model) => {
+        this.addModel(model);
+      });
+    }
   };
 }
 
