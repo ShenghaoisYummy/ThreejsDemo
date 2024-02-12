@@ -31,6 +31,7 @@ class Cube {
     gui ||= new GUI();
     const cuberFolder = gui.addFolder(name);
     this.setScale(cuberFolder);
+    this.setSwitchOnOff(cuberFolder);
     cuberFolder.open();
     return gui;
   };
@@ -41,6 +42,24 @@ class Cube {
     folder?.add(this.mesh.scale, "z", 1, 2);
   };
 
+  setSwitchOnOff = (folder) => {
+    this.switchName = folder
+      ?.add(this.buttonFunc, "setSwitchOnOff")
+      .name("SWITCH: ON");
+  };
+
+  buttonFunc = {
+    setSwitchOnOff: () => {
+      this.animateSwitch = !this.animateSwitch;
+      if (this.animateSwitch) {
+        this.mesh.material.color.set("#36cfc9");
+        this.switchName.name("SWITCH: ON");
+      } else {
+        this.mesh.material.color.set("#f5222d");
+        this.switchName.name("SWITCH: OFF");
+      }
+    },
+  };
   init = () => {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
   };
